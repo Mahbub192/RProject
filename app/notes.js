@@ -27,7 +27,7 @@ export default function Notes() {
   const [loading, setLoading] = useState(false);
   const params = useLocalSearchParams();
   const [date, setDate] = useState(new Date());
-  const [SImage, setSImage] = useState();
+  const [SImage, setSImage] = useState([]);
   const [note, setNote] = useState({
     name: "",
     age: "",
@@ -69,13 +69,21 @@ export default function Notes() {
   }, []);
 
   const Images = [];
+  const Images2 = [];
+
   const selectImages = async () => {
+    
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
       quality: 1,
     });
 
+    console.log(83, result)
+
+    setSImage([]);
+    console.log(86, SImage.length)
 
     result.assets.forEach(async (item) => {
       Images.push(item.uri);
@@ -84,17 +92,23 @@ export default function Notes() {
           format: "jpeg",
           base64: true,
         });
-        setSImage(base64);
-
+        // setSImage(base64);
+        const newImages = [...SImage, base64];
+        setSImage(newImages);
       } catch (error) {
         console.error("Error converting image to base64:", error);
       }
     });
 
-
+   
+    setTimeout(() => {
+      console.log(102, SImage.length)
+    }, 3000);
+    
     setNote({ ...note, images: Images });
     setImages(Images);
   };
+
 
   const storeNameArray = async (nameArray) => {
     try {
@@ -218,12 +232,19 @@ export default function Notes() {
       </div>
       <div style="flex:1">
       <div>
-      <img
-                src= "data:image/jpeg;base64,${SImage}"
-                alt="Image"
-                width="250"
-                height="300"
-                />
+      ${SImage
+        ?.map(
+          (singleImage, index) =>
+            `<div key=${index}>
+            <img
+            src= "data:image/jpeg;base64,${singleImage}"
+              alt="Image"
+              width="200"
+              height="300"
+            />
+          </div>`
+        )
+        .join("")}
 
                 
       
@@ -234,7 +255,12 @@ export default function Notes() {
   </body>
   </html>
 `;
-
+// <img
+      //           src= "data:image/jpeg;base64,${SImage}"
+      //           alt="Image"
+      //           width="250"
+      //           height="300"
+      //           />
   const print = async () => {
     // On iOS/android prints the given html. On web prints the HTML from the current page.
 

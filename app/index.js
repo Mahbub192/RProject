@@ -40,18 +40,6 @@ export default function index() {
     }, [])
   );
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   console.log(48, 'hello')
-  //   const getImage = async () => {
-  //     const jsonValue = await AsyncStorage.getItem("node");
-  //     let userValue = jsonValue != null ? JSON.parse(jsonValue) : [];
-  //     console.log(49, userValue);
-  //     setData(userValue);
-  //     setLoading(false);
-  //   };
-  //   getImage();
-  // }, []);
 
   if (loading) {
     return (
@@ -71,17 +59,6 @@ export default function index() {
           ) : (
             <Text style={{ textAlign: "center" }}>No Data!</Text>
           )}
-          {/* <FlatList
-            ListEmptyComponent={
-              <Text style={{ textAlign: "center" }}>No Data!</Text>
-            }
-            data={data}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => {
-              // return <Notes item={item} navigation={navigation} />;
-              return <RenderNote item={item} />;
-            }}
-          /> */}
         </ScrollView>
         <TouchableOpacity
           style={styles.newNoteButton}
