@@ -72,7 +72,7 @@ export default function Notes() {
   const Images2 = [];
 
   const selectImages = async () => {
-    
+    let newImages = [];
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -80,10 +80,10 @@ export default function Notes() {
       quality: 1,
     });
 
-    console.log(83, result)
+    console.log(83, result);
 
     setSImage([]);
-    console.log(86, SImage.length)
+    console.log(86, SImage.length);
 
     result.assets.forEach(async (item) => {
       Images.push(item.uri);
@@ -93,22 +93,21 @@ export default function Notes() {
           base64: true,
         });
         // setSImage(base64);
-        const newImages = [...SImage, base64];
+        newImages = [...newImages, base64];
+        console.log(97, newImages.length);
         setSImage(newImages);
       } catch (error) {
         console.error("Error converting image to base64:", error);
       }
     });
-
    
-    setTimeout(() => {
-      console.log(102, SImage.length)
-    }, 3000);
     
+
+
+
     setNote({ ...note, images: Images });
     setImages(Images);
   };
-
 
   const storeNameArray = async (nameArray) => {
     try {
@@ -127,142 +126,144 @@ export default function Notes() {
 
   /// HTML pdf file
 
-  const html = `
-  <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-    <style>
-      table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-      }
-      td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-      }
-    </style>
-  </head>
-  <body style="margin: 20px;">
-    <h1 style="font-size: 26px;text-align:center;margin-top: 50px; color: blue;">
-      ENDOSCOPIC PROCEDURE REPORT
-    </h1>
-  
-    <table>
-      <tr>
-        <td style="font-weight: bold;">Name: </td>
-        <td>${note.name}</td>
-        <td style="font-weight: bold;">Sex: </td>
-        <td>${note.sex}</td> 
-      </tr>
-      <tr>
-        <td style="font-weight: bold;">Age: </td>
-        <td>${note.name}</td>
-        <td style="font-weight: bold;">Visit Date: </td>
-        <td>${note.visit_date}</td>
-      </tr>
-    </table>
-  
-    <div style="display: flex;border-style: groove;">
-      <div style="flex:2">
-        <h1 style="font-size: 30px;text-align:center;margin-top: 50px;color: blue;">Procedure: Fiber Optic Laryngoscopy (FOL)</h1>
-        <h2 style="font-size: 24px;text-align:center;margin-top: 10px;color: blue;">Medication: 10% Xylocaine Spray</h2>
-        <div style="border-style: groove;">
-          <h3 style="font-size: 24px;text-align:center;margin-top: 10px;color: blue;">FINDINGS</h3>
-          <table>
-            <tr>
-              <td style="font-weight: bold;">Nose: </td>
-              <td>${note.nose}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Nasopharynx: </td>
-              <td>${note.nasopharynx}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Oropharynx: </td>
-              <td>${note.oropharynx}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Pyriform Fossa: </td>
-              <td>${note.pyriform_fossa}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Post Cricoid Area: </td>
-              <td>${note.post_cricoid_area}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Epiglottis: </td>
-              <td>${note.epiglottis}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Supraglottic Region: </td>
-              <td>${note.supraglottic_region}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Glottic (Vocal Cord): </td>
-              <td>${note.glottic}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Movement of Vocal Cord: </td>
-              <td>${note.movement_of_vocal_cord}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Airway: </td>
-              <td>${note.airway}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Ant. Commissure: </td>
-              <td>${note.ant_commissure}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Post. Commissure: </td>
-              <td>${note.post_commissure}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Subglottic Region: </td>
-              <td>${note.subglottic_region}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Comments: </td>
-              <td>${note.description}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div style="flex:1">
-      <div>
-      ${SImage
-        ?.map(
-          (singleImage, index) =>
-            `<div key=${index}>
-            <img
-            src= "data:image/jpeg;base64,${singleImage}"
-              alt="Image"
-              width="200"
-              height="300"
-            />
-          </div>`
-        )
-        .join("")}
-
-                
-      
-    </div>
-     
-      </div>
-    </div>
-  </body>
-  </html>
-`;
-// <img
-      //           src= "data:image/jpeg;base64,${SImage}"
-      //           alt="Image"
-      //           width="250"
-      //           height="300"
-      //           />
+  // console.log(259, html).
+  // <img
+  //           src= "data:image/jpeg;base64,${SImage}"
+  //           alt="Image"
+  //           width="250"
+  //           height="300"
+  //           />
   const print = async () => {
     // On iOS/android prints the given html. On web prints the HTML from the current page.
+
+    console.log(142, SImage.length);
+
+    const html = `
+    <html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+      <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+      </style>
+    </head>
+    <body style="margin: 20px;">
+      <h1 style="font-size: 26px;text-align:center;margin-top: 50px; color: blue;">
+        ENDOSCOPIC PROCEDURE REPORT
+      </h1>
+    
+      <table>
+        <tr>
+          <td style="font-weight: bold;">Name: </td>
+          <td>${note.name}</td>
+          <td style="font-weight: bold;">Sex: </td>
+          <td>${note.sex}</td> 
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Age: </td>
+          <td>${note.name}</td>
+          <td style="font-weight: bold;">Visit Date: </td>
+          <td>${note.visit_date}</td>
+        </tr>
+      </table>
+    
+      <div style="display: flex;border-style: groove;">
+        <div style="flex:2">
+          <h1 style="font-size: 30px;text-align:center;margin-top: 50px;color: blue;">Procedure: Fiber Optic Laryngoscopy (FOL)</h1>
+          <h2 style="font-size: 24px;text-align:center;margin-top: 10px;color: blue;">Medication: 10% Xylocaine Spray</h2>
+          <div style="border-style: groove;">
+            <h3 style="font-size: 24px;text-align:center;margin-top: 10px;color: blue;">FINDINGS</h3>
+            <table>
+              <tr>
+                <td style="font-weight: bold;">Nose: </td>
+                <td>${note.nose}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Nasopharynx: </td>
+                <td>${note.nasopharynx}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Oropharynx: </td>
+                <td>${note.oropharynx}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Pyriform Fossa: </td>
+                <td>${note.pyriform_fossa}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Post Cricoid Area: </td>
+                <td>${note.post_cricoid_area}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Epiglottis: </td>
+                <td>${note.epiglottis}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Supraglottic Region: </td>
+                <td>${note.supraglottic_region}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Glottic (Vocal Cord): </td>
+                <td>${note.glottic}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Movement of Vocal Cord: </td>
+                <td>${note.movement_of_vocal_cord}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Airway: </td>
+                <td>${note.airway}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Ant. Commissure: </td>
+                <td>${note.ant_commissure}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Post. Commissure: </td>
+                <td>${note.post_commissure}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Subglottic Region: </td>
+                <td>${note.subglottic_region}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Comments: </td>
+                <td>${note.description}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div style="flex:1">
+        <div>
+        ${SImage?.map((singleImage, index) => {
+          console.log(237, index);
+          return `<div key=${index}>
+              <img
+              src= "data:image/jpeg;base64,${singleImage}"
+                alt="Image"
+                width="230"
+                height="300"
+              />
+            </div>`;
+        }).join("")}
+  
+                  
+        
+      </div>
+       
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
 
     await Print.printAsync({
       html: html,
